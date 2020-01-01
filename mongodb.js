@@ -1,7 +1,10 @@
 // CRUD create read update delete
 
-const mongodb = require("mongodb");
-const MongoClient = mongodb.MongoClient; // --> connects to the database
+// const mongodb = require("mongodb");
+// const MongoClient = mongodb.MongoClient; // --> connects to the database
+// const ObjectID = mongodb.ObjectID;
+
+const {MongoClient, ObjectID} = require('mongodb') // --> destructuring mongodb object
 
 const connectionURL = "mongodb://127.0.0.1:27017";
 const databaseName = "task-manager";
@@ -44,27 +47,27 @@ MongoClient.connect(
     //     console.log(result.ops);
     //   }
     // );
-    db.collection("tasks").insertMany(
-      [
-        {
-          description: "Weather Application",
-          completed: true
-        },
-        {
-          description: "ToDo Application",
-          completed: true
-        },
-        {
-          description: "Task Manager Application",
-          completed: false
-        }
-      ],
-      (error, result) => {
-        if (error) {
-          return console.log("Unable to insert tasks to database!");
-        }
-        console.log(result.ops);
-      }
-    );
+    // db.collection("tasks").insertMany(
+    //   [
+    //     {
+    //       description: "Weather Application",
+    //       completed: true
+    //     },
+    //     {
+    //       description: "ToDo Application",
+    //       completed: true
+    //     },
+    //     {
+    //       description: "Task Manager Application",
+    //       completed: false
+    //     }
+    //   ],
+    //   (error, result) => {
+    //     if (error) {
+    //       return console.log("Unable to insert tasks to database!");
+    //     }
+    //     console.log(result.ops);
+    //   }
+    // );
   }
 );
