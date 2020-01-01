@@ -4,14 +4,15 @@
 // const MongoClient = mongodb.MongoClient; // --> connects to the database
 // const ObjectID = mongodb.ObjectID;
 
-const {MongoClient, ObjectID} = require('mongodb') // --> destructuring mongodb object
+const { MongoClient, ObjectID } = require("mongodb"); // --> destructuring mongodb object
 
 const connectionURL = "mongodb://127.0.0.1:27017";
 const databaseName = "task-manager";
 
-const id = new ObjectID() // --> constractor function
-console.log(id);
-console.log(id.getTimestamp())
+const id = new ObjectID(); // --> constractor function
+console.log(id.id); // --> ID is a binary data instead of a string to reduce the size
+console.log(id.id.length); // --> 12
+console.log(id.toHexString().length); // --> 24
 
 MongoClient.connect(
   connectionURL,
@@ -21,19 +22,18 @@ MongoClient.connect(
       return console.log("Unable to connect to the database!");
     }
     const db = client.db(databaseName);
-    db.collection("users").insertOne( // --> users is the name of the collection
-      {
-        _id: id,
-        name: "Almira",
-        age: 3
-      },
-      (error, result) => {
-        if (error) {
-          return console.log("Unable to insert user!");
-        }
-        console.log(result.ops); // --> array of documents
-      }
-    );
+    // db.collection("users").insertOne( // --> users is the name of the collection
+    //   {
+    //     name: "Almira",
+    //     age: 3
+    //   },
+    //   (error, result) => {
+    //     if (error) {
+    //       return console.log("Unable to insert user!");
+    //     }
+    //     console.log(result.ops); // --> array of documents
+    //   }
+    // );
     // db.collection("users").insertMany(
     //   [
     //     {
