@@ -12,7 +12,6 @@ MongoClient.connect(connectionURL, {useUnifiedTopology: true}, (error, client)=>
     }
     console.log('successfull')
     const db = client.db(databaseName)
-
     db.collection('users').insertOne({
         name:'Mert',
         age: 39
