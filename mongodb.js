@@ -9,6 +9,10 @@ const {MongoClient, ObjectID} = require('mongodb') // --> destructuring mongodb 
 const connectionURL = "mongodb://127.0.0.1:27017";
 const databaseName = "task-manager";
 
+const id = new ObjectID() // --> constractor function
+console.log(id);
+console.log(id.getTimestamp())
+
 MongoClient.connect(
   connectionURL,
   { useUnifiedTopology: true },
@@ -17,18 +21,19 @@ MongoClient.connect(
       return console.log("Unable to connect to the database!");
     }
     const db = client.db(databaseName);
-    // db.collection("users").insertOne( // --> users is the name of the collection
-    //   {
-    //     name: "Mert",
-    //     age: 39
-    //   },
-    //   (error, result) => {
-    //     if (error) {
-    //       return console.log("Unable to insert user!");
-    //     }
-    //     console.log(result.ops); // --> array of documents
-    //   }
-    // );
+    db.collection("users").insertOne( // --> users is the name of the collection
+      {
+        _id: id,
+        name: "Almira",
+        age: 3
+      },
+      (error, result) => {
+        if (error) {
+          return console.log("Unable to insert user!");
+        }
+        console.log(result.ops); // --> array of documents
+      }
+    );
     // db.collection("users").insertMany(
     //   [
     //     {
