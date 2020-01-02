@@ -17,14 +17,16 @@ MongoClient.connect(
       return console.log("Unable to connect to the database!");
     }
     const db = client.db(databaseName);
-    db.collection("users").findOne(
-      { _id: new ObjectID("5e0d099ad830da1f2b079016") },
-      (error, user) => {
-        if (error) {
-          return console.log("User can not be found!");
-        }
-        console.log(user);
-      }
-    );
+    // find method returns a cursor. Cursor has multiple methods to be used
+    db.collection("users")
+      .find({ age: 39 })
+      .toArray((error, users) => {
+        console.log(users);
+      });
+      db.collection("users")
+      .find({ age: 39 })
+      .count((error, count) => {
+        console.log(count);
+      });
   }
 );
