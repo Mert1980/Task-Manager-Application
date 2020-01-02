@@ -5,8 +5,9 @@
 // const ObjectID = mongodb.ObjectID;
 
 const { MongoClient, ObjectID } = require("mongodb"); // --> destructuring mongodb object
-
-const connectionURL = "mongodb://127.0.0.1:27017";
+require("dotenv").config();
+// console.log(process.env) --> see the MONGODB_PSWD at the very bottom
+const connectionURL = `mongodb://Mert:${process.env.MONGODB_PSWD}@127.0.0.1:27017`;
 const databaseName = "task-manager";
 
 MongoClient.connect(
