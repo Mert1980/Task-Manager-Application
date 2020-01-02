@@ -9,11 +9,6 @@ const { MongoClient, ObjectID } = require("mongodb"); // --> destructuring mongo
 const connectionURL = "mongodb://127.0.0.1:27017";
 const databaseName = "task-manager";
 
-const id = new ObjectID(); // --> constractor function
-console.log(id.id); // --> ID is a binary data instead of a string to reduce the size
-console.log(id.id.length); // --> 12
-console.log(id.toHexString().length); // --> 24
-
 MongoClient.connect(
   connectionURL,
   { useUnifiedTopology: true },
@@ -22,57 +17,23 @@ MongoClient.connect(
       return console.log("Unable to connect to the database!");
     }
     const db = client.db(databaseName);
-    // db.collection("users").insertOne( // --> users is the name of the collection
-    //   {
-    //     name: "Almira",
-    //     age: 3
-    //   },
-    //   (error, result) => {
-    //     if (error) {
-    //       return console.log("Unable to insert user!");
-    //     }
-    //     console.log(result.ops); // --> array of documents
-    //   }
-    // );
-    // db.collection("users").insertMany(
-    //   [
-    //     {
-    //       name: "Yigit",
-    //       age: 30
-    //     },
-    //     {
-    //       name: "Kaan",
-    //       age: 35
-    //     }
-    //   ],
-    //   (error, result) => {
-    //     if (error) {
-    //       return console.log("Unable to insert users!");
-    //     }
-    //     console.log(result.ops);
-    //   }
-    // );
-    // db.collection("tasks").insertMany(
-    //   [
-    //     {
-    //       description: "Weather Application",
-    //       completed: true
-    //     },
-    //     {
-    //       description: "ToDo Application",
-    //       completed: true
-    //     },
-    //     {
-    //       description: "Task Manager Application",
-    //       completed: false
-    //     }
-    //   ],
-    //   (error, result) => {
-    //     if (error) {
-    //       return console.log("Unable to insert tasks to database!");
-    //     }
-    //     console.log(result.ops);
-    //   }
-    // );
+    // find method returns a cursor. Cursor has multiple methods to be used
+    db.collection("tasks").findOne(
+      { _id: new ObjectID("5e0d151bdaa19027e000ffbc") },
+      (error, task) => {
+        if (error) {
+          return console.log("Unable to find task!");
+        }
+        console.log(task);
+      }
+    );
+    db.collection("tasks")
+      .find({ completed: false })
+      .toArray((error, tasks) => {
+        if (error) {
+          return console.log("Unable to find task!");
+        }
+        console.log(tasks);
+      });
   }
 );
