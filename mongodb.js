@@ -18,15 +18,22 @@ MongoClient.connect(
     }
     const db = client.db(databaseName);
     // find method returns a cursor. Cursor has multiple methods to be used
-    db.collection("users")
-      .find({ age: 39 })
-      .toArray((error, users) => {
-        console.log(users);
-      });
-      db.collection("users")
-      .find({ age: 39 })
-      .count((error, count) => {
-        console.log(count);
+    db.collection("tasks").findOne(
+      { _id: new ObjectID("5e0d151bdaa19027e000ffbc") },
+      (error, task) => {
+        if (error) {
+          return console.log("Unable to find task!");
+        }
+        console.log(task);
+      }
+    );
+    db.collection("tasks")
+      .find({ completed: false })
+      .toArray((error, tasks) => {
+        if (error) {
+          return console.log("Unable to find task!");
+        }
+        console.log(tasks);
       });
   }
 );
