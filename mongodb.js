@@ -17,7 +17,8 @@ MongoClient.connect(
       return console.log("Unable to connect to the database!");
     }
     const db = client.db(databaseName);
-    db.collection("users").findOne({ name: "Kaan" }, (error, user) => {
+    // searching for a document not in database doesn't return an error. It returns null
+    db.collection("users").findOne({ name: "Kaan", age:1 }, (error, user) => {
       if (error) {
         return console.log("User can not be found!");
       }
