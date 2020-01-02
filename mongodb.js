@@ -17,12 +17,14 @@ MongoClient.connect(
       return console.log("Unable to connect to the database!");
     }
     const db = client.db(databaseName);
-    // searching for a document not in database doesn't return an error. It returns null
-    db.collection("users").findOne({ name: "Kaan", age:1 }, (error, user) => {
-      if (error) {
-        return console.log("User can not be found!");
+    db.collection("users").findOne(
+      { _id: new ObjectID("5e0d099ad830da1f2b079016") },
+      (error, user) => {
+        if (error) {
+          return console.log("User can not be found!");
+        }
+        console.log(user);
       }
-      console.log(user);
-    });
+    );
   }
 );
