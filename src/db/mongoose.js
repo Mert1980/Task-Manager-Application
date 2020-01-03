@@ -17,3 +17,7 @@ const User = mongoose.model("User", {
     type: Number
   }
 });
+const me = new User({ // creating an instance of User model
+    name:'Mert',
+    age:39
+})
