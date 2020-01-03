@@ -1,31 +1,27 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 
-mongoose.connect(
-  `mongodb://127.0.0.1:27017/task-manager-api`,
-  {
-    useUnifiedTopology: true,
-    useCreateIndex: true // --> this allow as to access data quickly
-  }
-);
-const User = mongoose.model("User", {
-  // --> User is a constractor function for User model
-  name: {
+mongoose.connect(`mongodb://127.0.0.1:27017/task-manager-api`, {
+  useUnifiedTopology: true,
+  useCreateIndex: true // --> this allow as to access data quickly
+});
+const Task = mongoose.model("Task", {
+  description: {
     type: String
   },
-  age: {
-    type: Number
+  completed: {
+    type: Boolean
   }
 });
-const me = new User({
-  // creating an instance of User model
-  name: "Mert",
-  age: 39
+const myTasks = new Task({
+  description: "Task Manager Application",
+  completed: false
 });
-me.save() // save method doesn't take arguments
-  .then(me => {
-    console.log(me);
+myTasks
+  .save()
+  .then(myTasks => {
+    console.log(myTasks);
   })
   .catch(error => {
-    console.log("Error:", error);
+    console.log(error);
   });
