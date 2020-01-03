@@ -15,34 +15,13 @@ MongoClient.connect(
     }
     const db = client.db(databaseName);
 
-    // db.collection("users").updateOne(
-    //   {
-    //     _id: new ObjectID("5e0d2798a4c0dc2df9f4237a")
-    //   },
-    //   {
-    //     $inc: {
-    //       age: 1
-    //     }
-    //   }
-    // ).then(result => {
-    //     console.log(result);
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
-    db.collection("tasks")
-      .updateMany(
-        {
-          completed: false
-        },
-        {
-          $set: {
-            completed: true
-          }
-        }
-      )
+    db.collection("users")
+      .deleteMany({
+        age: { $lt: 10 } // --> see documentation for query-selectors
+        // --> https://docs.mongodb.com/manual/reference/operator/query/#query-selectors
+      })
       .then(result => {
-        console.log(result.modifiedCount);
+        console.log(result.deletedCount);
       })
       .catch(error => {
         console.log(error);
