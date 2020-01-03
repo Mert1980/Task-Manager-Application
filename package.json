@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Mert1980/Task-Manager-Application#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "mongodb": "^3.4.1"
+    "mongodb": "^3.4.1",
+    "mongoose": "^5.8.4"
   }
 }
