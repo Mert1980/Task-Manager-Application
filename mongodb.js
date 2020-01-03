@@ -15,7 +15,7 @@ MongoClient.connect(
     }
     const db = client.db(databaseName);
 
-    const updatePromise = db.collection("users").updateOne(
+    db.collection("users").updateOne(
       {
         _id: new ObjectID("5e0d2798a4c0dc2df9f4237a")
       },
@@ -24,9 +24,7 @@ MongoClient.connect(
           name: "Asena"
         }
       }
-    );
-    updatePromise
-      .then(result => {
+    ).then(result => {
         console.log(result);
       })
       .catch(error => {
