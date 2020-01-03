@@ -15,10 +15,9 @@ MongoClient.connect(
     }
     const db = client.db(databaseName);
 
-    db.collection("users")
-      .deleteMany({
-        age: { $lt: 10 } // --> see documentation for query-selectors
-        // --> https://docs.mongodb.com/manual/reference/operator/query/#query-selectors
+    db.collection("tasks")
+      .deleteOne({
+        description: "ToDo Application"
       })
       .then(result => {
         console.log(result.deletedCount);
