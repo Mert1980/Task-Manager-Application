@@ -8,3 +8,12 @@ mongoose.connect(
     useCreateIndex: true // --> this allow as to access data quickly
   }
 );
+const User = mongoose.model("User", {
+  // --> User is a constractor function for User model
+  name: {
+    type: String
+  },
+  age: {
+    type: Number
+  }
+});
