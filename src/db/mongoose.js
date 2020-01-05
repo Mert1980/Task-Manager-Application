@@ -29,9 +29,9 @@ const User = mongoose.model("User", {
     required: true,
     trim: true,
     minlength: 7,
-    validate(value){
-      if (value.toLowerCase().includes("password")){
-        throw new Error ('Password can not contain "password"')
+    validate(value) {
+      if (value.toLowerCase().includes("password")) {
+        throw new Error('Password can not contain "password"');
       }
     }
   },
@@ -47,38 +47,41 @@ const User = mongoose.model("User", {
   }
 });
 
-const user = new User({
-  name: "   Mert   ",
-  email: "   MERTDEMIROK@GMAIL.com",
-  password: "    Password123      ",
-  age: 39
+// const user = new User({
+//   name: "   Mert   ",
+//   email: "   MERTDEMIROK@GMAIL.com",
+//   password: "    Password123      ",
+//   age: 39
+// });
+// user
+//   .save()
+//   .then(result => {
+//     console.log(result);
+//   })
+//   .catch(error => {
+//     console.log(error.message);
+//   });
+
+const Task = mongoose.model("Task", {
+  description: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  completed: {
+    type: Boolean,
+    default: false
+  }
 });
-user
+const myTasks = new Task({
+  description: "    ToDo Application",
+});
+
+myTasks
   .save()
-  .then(result => {
-    console.log(result);
+  .then(myTasks => {
+    console.log(myTasks);
   })
   .catch(error => {
     console.log(error.message);
   });
-
-const Task = mongoose.model("Task", {
-  description: {
-    type: String
-  },
-  completed: {
-    type: Boolean
-  }
-});
-const myTasks = new Task({
-  description: "Task Manager Application",
-  completed: false
-});
-// myTasks
-//   .save()
-//   .then(myTasks => {
-//     console.log(myTasks);
-//   })
-//   .catch(error => {
-//     console.log(error);
-//   });
