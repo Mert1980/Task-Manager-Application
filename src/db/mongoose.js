@@ -12,13 +12,19 @@ const User = mongoose.model("User", {
     required: true
   },
   age: {
-    type: Number
+    type: Number,
+    required: true,
+    validate(value) {
+      if (value < 0) {
+        throw new Error("Age must be a positive number!");
+      }
+    }
   }
 });
 
 const user = new User({
   name: "Kaan",
-  // age: 39
+  age: -1
 });
 user
   .save()
@@ -26,7 +32,7 @@ user
     console.log(result);
   })
   .catch(error => {
-    console.log(error.name, error._message);
+    console.log(error.message);
   });
 
 const Task = mongoose.model("Task", {
