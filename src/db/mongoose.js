@@ -1,5 +1,6 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
+const validator = require("validator");
 
 mongoose.connect(`mongodb://127.0.0.1:27017/task-manager-api`, {
   useUnifiedTopology: true,
@@ -11,10 +12,20 @@ const User = mongoose.model("User", {
     type: String,
     required: true
   },
+  email: {
+    type: String,
+    required: true,
+    validate(value) {
+      if (!validator.isEmail(value)) {
+        throw new Error("Email is invalid!");
+      }
+    }
+  },
   age: {
     type: Number,
     required: true,
-    validate(value) { // there is not a build in validation in mongoose for numbers
+    validate(value) {
+      // there is not a build in validation in mongoose for numbers
       if (value < 0) {
         throw new Error("Age must be a positive number!");
       }
@@ -24,7 +35,8 @@ const User = mongoose.model("User", {
 
 const user = new User({
   name: "Kaan",
-  age: -1
+  email: "kaandemirok",
+  age: 12
 });
 user
   .save()
