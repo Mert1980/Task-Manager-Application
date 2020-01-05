@@ -14,7 +14,7 @@ const User = mongoose.model("User", {
   age: {
     type: Number,
     required: true,
-    validate(value) {
+    validate(value) { // there is not a build in validation in mongoose for numbers
       if (value < 0) {
         throw new Error("Age must be a positive number!");
       }
