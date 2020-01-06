@@ -16,7 +16,9 @@ app.post("/users", (req, res) => {
     .then(() => {
       res.send(user);
     })
-    .catch(error => {});
+    .catch(e => {
+      res.send(e.message);
+    });
 });
 
 app.listen(port, () => {
