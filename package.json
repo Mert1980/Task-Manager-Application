@@ -20,6 +20,10 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "mongodb": "^3.4.1",
-    "mongoose": "^5.8.4"
+    "mongoose": "^5.8.4",
+    "validator": "^12.1.0"
+  },
+  "devDependencies": { // npm i nodemon@2.0.2 --save-dev
+    "nodemon": "^2.0.2"
   }
 }
