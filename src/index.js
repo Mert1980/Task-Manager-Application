@@ -9,9 +9,14 @@ app.use(express.json()); // this configures express to automatically parse JSON 
 // object so we can access it in our request handlers
 
 app.post("/users", (req, res) => {
-  // we are sending JSON data via request body
-  console.log(req.body);
-  res.send("testing!");
+  // creating new instance of User
+  const user = new User(req.body);
+  user
+    .save()
+    .then(() => {
+      res.send(user);
+    })
+    .catch(error => {});
 });
 
 app.listen(port, () => {
