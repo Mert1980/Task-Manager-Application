@@ -22,18 +22,31 @@ app.post("/users", (req, res) => {
     });
 });
 
-app.get("/users", (req, res)=>{
+app.get("/users", (req, res) => {
   // If we live the Object blank, it fetches all of the users from database
-  User.find({}).then((users)=>{
-    res.send(users)
-  }).catch((e)=>{
-    res.status(500).send()
-  })
-})
+  User.find({})
+    .then(users => {
+      res.send(users);
+    })
+    .catch(error => {
+      res.status(500).send();
+    });
+});
 
-app.get("/users/:id", (req, res)=>{ // route parameters--> id can be named by anything else
-  console.log(req.params);
-}) 
+app.get("/users/:id", (req, res) => {
+  // route parameters--> id can be named by anything else
+  const _id = req.params.id;
+  User.findById(_id) // mongoose automatically converts string "id" into objeck "id"
+    .then(user => {
+      if (!user){ // mongodb does not return an error if the ID does not match up in database
+        return res.status(404).send() // 
+      }
+      res.send(user);
+    })
+    .catch(error => {
+      res.status(500).send();
+    });
+});
 
 app.post("/tasks", (req, res) => {
   const task = new Task(req.body);
