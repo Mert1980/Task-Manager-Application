@@ -31,6 +31,10 @@ app.get("/users", (req, res)=>{
   })
 })
 
+app.get("/users/:id", (req, res)=>{ // route parameters--> id can be named by anything else
+  console.log(req.params);
+}) 
+
 app.post("/tasks", (req, res) => {
   const task = new Task(req.body);
   task
