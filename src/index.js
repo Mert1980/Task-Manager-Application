@@ -22,6 +22,15 @@ app.post("/users", (req, res) => {
     });
 });
 
+app.get("/users", (req, res)=>{
+  // If we live the Object blank, it fetches all of the users from database
+  User.find({}).then((users)=>{
+    res.send(users)
+  }).catch((e)=>{
+    res.status(500).send()
+  })
+})
+
 app.post("/tasks", (req, res) => {
   const task = new Task(req.body);
   task
