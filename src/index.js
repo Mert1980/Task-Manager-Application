@@ -38,8 +38,9 @@ app.get("/users/:id", (req, res) => {
   const _id = req.params.id;
   User.findById(_id) // mongoose automatically converts string "id" into objeck "id"
     .then(user => {
-      if (!user){ // mongodb does not return an error if the ID does not match up in database
-        return res.status(404).send() // 
+      if (!user) {
+        // mongodb does not return an error if the ID does not match up in database
+        return res.status(404).send(); // 404: not found
       }
       res.send(user);
     })
@@ -53,10 +54,34 @@ app.post("/tasks", (req, res) => {
   task
     .save()
     .then(() => {
-      res.status(201).send(task);
+      res.status(404).send(task);
     })
     .catch(e => {
       res.status(400).send(e.message);
+    });
+});
+
+app.get("/tasks", (req, res) => {
+  Task.find({})
+    .then(tasks => {
+      res.send(tasks);
+    })
+    .catch(error => {
+      res.status(500).send();
+    });
+});
+
+app.get("/tasks/:id", (req, res) => {
+  const _id = req.params.id;
+  Task.findById(_id)
+    .then(task => {
+      if (!task) {
+        return res.status(404).send(); // 404:not found
+      }
+      res.send(task);
+    })
+    .catch(error => {
+      res.status(500).send();
     });
 });
 
