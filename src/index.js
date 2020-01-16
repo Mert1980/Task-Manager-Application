@@ -11,6 +11,7 @@ app.use(express.json()); // this configures express to automatically parse JSON 
 
 app.post("/users", (req, res) => {
   // creating new instance of User
+  console.log(req.body)
   const user = new User(req.body);
   user
     .save()
@@ -34,6 +35,7 @@ app.get("/users", (req, res) => {
 });
 
 app.get("/users/:id", (req, res) => {
+  console.log(req.params)
   // route parameters--> id can be named by anything else
   const _id = req.params.id;
   User.findById(_id) // mongoose automatically converts string "id" into objeck "id"
