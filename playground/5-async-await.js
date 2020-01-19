@@ -2,15 +2,17 @@
 with the value the developer choose to return from the function
 */
 const add = (a, b) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(a + b);
-      }, 2000);
-    });
-  };
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(a + b);
+    }, 2000);
+  });
+};
 const doWork = async () => {
   const sum = await add(1, 99);
-  return sum;
+  const sum2 = await add(sum, 100);
+  const sum3 = await add(sum2, 100);
+  return sum3;
 };
 // console.log(doWork());
 doWork()
