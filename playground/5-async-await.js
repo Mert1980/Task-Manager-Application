@@ -3,6 +3,7 @@ with the value the developer choose to return from the function
 */
 
 const doWork = async () => {
+  throw new Error("Something went wrong");
   return "Mert"; // --> returns Promise { 'Mert' }
 };
 // console.log(doWork());
