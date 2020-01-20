@@ -9,82 +9,74 @@ const port = process.env.port || 3000;
 app.use(express.json()); // this configures express to automatically parse JSON into
 // object so we can access it in our request handlers
 
-app.post("/users", (req, res) => {
+app.post("/users", async (req, res) => {
   // creating new instance of User
-  console.log(req.body)
+  // console.log(req.body);
   const user = new User(req.body);
-  user
-    .save()
-    .then(() => {
-      res.status(201).send(user);
-    })
-    .catch(e => {
-      res.status(400).send(e.message);
-    });
+  try {
+    await user.save();
+    res.status(201).send(user);
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
 });
 
-app.get("/users", (req, res) => {
+app.get("/users", async (req, res) => {
   // If we live the Object blank, it fetches all of the users from database
-  User.find({})
-    .then(users => {
-      res.send(users);
-    })
-    .catch(error => {
-      res.status(500).send();
-    });
+  try {
+    const users = await User.find({});
+    res.send(users);
+  } catch (e) {
+    res.status(500).send();
+  }
 });
 
-app.get("/users/:id", (req, res) => {
-  console.log(req.params)
+app.get("/users/:id", async (req, res) => {
+  console.log(req.params);
   // route parameters--> id can be named by anything else
   const _id = req.params.id;
-  User.findById(_id) // mongoose automatically converts string "id" into objeck "id"
-    .then(user => {
-      if (!user) {
-        // mongodb does not return an error if the ID does not match up in database
-        return res.status(404).send(); // 404: not found
-      }
-      res.send(user);
-    })
-    .catch(error => {
-      res.status(500).send();
-    });
+  try {
+    const user = await User.findById(_id);
+    if (!user) {
+      // mongodb does not return an error if the ID does not match up in database
+      return res.status(404).send(); // 404: not found
+    }
+    await res.send(user);
+  } catch (e) {
+    res.status(500).send();
+  }
 });
 
-app.post("/tasks", (req, res) => {
+app.post("/tasks", async (req, res) => {
   const task = new Task(req.body);
-  task
-    .save()
-    .then(() => {
-      res.status(404).send(task);
-    })
-    .catch(e => {
-      res.status(400).send(e.message);
-    });
+  try {
+    await task.save();
+    res.status(201).send(task);
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
 });
 
-app.get("/tasks", (req, res) => {
-  Task.find({})
-    .then(tasks => {
-      res.send(tasks);
-    })
-    .catch(error => {
-      res.status(500).send();
-    });
+app.get("/tasks", async (req, res) => {
+  try {
+    const tasks = await Task.find({});
+    res.send(tasks);
+  } catch (e) {
+    res.status(500).send();
+  }
 });
 
-app.get("/tasks/:id", (req, res) => {
+app.get("/tasks/:id", async (req, res) => {
   const _id = req.params.id;
-  Task.findById(_id)
-    .then(task => {
-      if (!task) {
-        return res.status(404).send(); // 404:not found
-      }
-      res.send(task);
-    })
-    .catch(error => {
-      res.status(500).send();
-    });
+  try {
+    const task = await Task.findById(_id);
+    if (!task) {
+      return res.status(404).send(); // 404:not found
+    }
+    res.send(task);
+  } catch (e) {
+    res.status(500).send();
+  }
 });
 
 app.listen(port, () => {
