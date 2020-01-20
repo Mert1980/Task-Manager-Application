@@ -31,21 +31,20 @@ app.get("/users", async (req, res) => {
   }
 });
 
-app.get("/users/:id", (req, res) => {
+app.get("/users/:id", async (req, res) => {
   console.log(req.params);
   // route parameters--> id can be named by anything else
   const _id = req.params.id;
-  User.findById(_id) // mongoose automatically converts string "id" into objeck "id"
-    .then(user => {
-      if (!user) {
-        // mongodb does not return an error if the ID does not match up in database
-        return res.status(404).send(); // 404: not found
-      }
-      res.send(user);
-    })
-    .catch(error => {
-      res.status(500).send();
-    });
+  try {
+    const user = await User.findById(_id);
+    if (!user) {
+      // mongodb does not return an error if the ID does not match up in database
+      return res.status(404).send(); // 404: not found
+    }
+    await res.send(user);
+  } catch (e) {
+    res.status(500).send();
+  }
 });
 
 app.post("/tasks", (req, res) => {
