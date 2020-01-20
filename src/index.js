@@ -9,18 +9,16 @@ const port = process.env.port || 3000;
 app.use(express.json()); // this configures express to automatically parse JSON into
 // object so we can access it in our request handlers
 
-app.post("/users", (req, res) => {
+app.post("/users", async (req, res) => {
   // creating new instance of User
-  console.log(req.body)
+  // console.log(req.body);
   const user = new User(req.body);
-  user
-    .save()
-    .then(() => {
-      res.status(201).send(user);
-    })
-    .catch(e => {
-      res.status(400).send(e.message);
-    });
+  try {
+    await user.save();
+    res.status(201).send(user);
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
 });
 
 app.get("/users", (req, res) => {
@@ -35,7 +33,7 @@ app.get("/users", (req, res) => {
 });
 
 app.get("/users/:id", (req, res) => {
-  console.log(req.params)
+  console.log(req.params);
   // route parameters--> id can be named by anything else
   const _id = req.params.id;
   User.findById(_id) // mongoose automatically converts string "id" into objeck "id"
