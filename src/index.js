@@ -21,15 +21,14 @@ app.post("/users", async (req, res) => {
   }
 });
 
-app.get("/users", (req, res) => {
+app.get("/users", async (req, res) => {
   // If we live the Object blank, it fetches all of the users from database
-  User.find({})
-    .then(users => {
-      res.send(users);
-    })
-    .catch(error => {
-      res.status(500).send();
-    });
+  try {
+    const users = await User.find({});
+    res.send(users);
+  } catch (e) {
+    res.status(500).send();
+  }
 });
 
 app.get("/users/:id", (req, res) => {
