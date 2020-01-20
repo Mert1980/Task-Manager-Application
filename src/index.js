@@ -41,9 +41,33 @@ app.get("/users/:id", async (req, res) => {
       // mongodb does not return an error if the ID does not match up in database
       return res.status(404).send(); // 404: not found
     }
-    await res.send(user);
+    res.send(user);
   } catch (e) {
     res.status(500).send();
+  }
+});
+
+app.patch("/users/:id", async (req, res) => {
+  const updates = Object.keys(req.body);
+  const allowedUpdates = ["name", "email", "password", "age"];
+  const isValidOperation = updates.every(update =>
+    allowedUpdates.includes(update)
+  );
+
+  if (!isValidOperation) {
+    return res.status(400).send({ error: "Invalid updates!" });
+  }
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true, // to return the modified document rather than the original. defaults to false
+      runValidators: true // if true, runs update validators on this command
+    });
+    if (!user) {
+      return res.status(404).send();
+    }
+    res.send(user);
+  } catch (e) {
+    res.status(400).send(e.message);
   }
 });
 
@@ -62,7 +86,7 @@ app.get("/tasks", async (req, res) => {
     const tasks = await Task.find({});
     res.send(tasks);
   } catch (e) {
-    res.status(500).send();
+    res.status(500).send(e.message);
   }
 });
 
@@ -75,7 +99,32 @@ app.get("/tasks/:id", async (req, res) => {
     }
     res.send(task);
   } catch (e) {
-    res.status(500).send();
+    res.status(500).send(e.message);
+  }
+});
+
+app.patch("/tasks/:id", async (req, res) => {
+  const updates = Object.keys(req.body);
+  const allowedUpdates = ["completed", "description"];
+  const isValidOperation = updates.every(update =>
+    allowedUpdates.includes(update)
+  );
+
+  if (!isValidOperation) {
+    return res.status(400).send({ Error: "Invalid updates!" });
+  }
+
+  try {
+    const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
+    if (!task) {
+      res.status(404).send();
+    }
+    res.send(task);
+  } catch (e) {
+    res.status(400).send(e.message);
   }
 });
 
