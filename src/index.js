@@ -9,6 +9,13 @@ const port = process.env.port || 3000;
 app.use(express.json()); // this configures express to automatically parse JSON into
 // object so we can access it in our request handlers
 
+const router = new express.Router();
+router.get('/test', (req, res)=>{
+  res.send('This is a test router')
+});
+app.use(router);
+
+
 app.post("/users", async (req, res) => {
   // creating new instance of User
   // console.log(req.body);
