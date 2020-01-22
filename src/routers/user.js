@@ -5,4 +5,4 @@ router.get("/get", (req, res) => {
   res.send("From a new file");
 });
 
-
+module.exports = router;
