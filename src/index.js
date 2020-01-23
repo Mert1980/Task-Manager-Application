@@ -25,6 +25,9 @@ const myFunction = async () => {
   // 8 is the balance between speed and security
   console.log(password);
   console.log(hashedPassword);
+
+  const isMatch = await bcrypt.compare("Red12345", hashedPassword);
+  console.log(isMatch);
 };
 myFunction();
 // Encryption algorithms are reverseble: mert --> dsldfjsldfhsneouwen --> mert 
