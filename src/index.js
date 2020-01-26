@@ -16,9 +16,9 @@ app.listen(port, () => {
   console.log(`Server is up on port ${port}`);
 });
 
-
+const jwt = require("jsonwebtoken");
 
 const myFunction = async () => {
-  
+  jwt.sign() // return value of jwt.sign is a new token
 };
 myFunction();
