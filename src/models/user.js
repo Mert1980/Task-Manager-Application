@@ -42,6 +42,22 @@ const userSchema = new mongoose.Schema({
   }
 });
 
+userSchema.statics.findByCredentials = async (email, password) => {
+  const user = await User.findOne({ email: email }); // shorthand syntax --> {email}
+
+  if (!user) {
+    throw new Error("Unable to login!");
+  }
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  if (!isMatch) {
+    throw new Error("Unable to login!");
+  }
+
+  return user;
+};
+
+// Hash the plain text password before saving
 // Arrow functions don't bind 'this'
 userSchema.pre("save", async function(next) {
   // 'this' gives us access to the individual user that's about to be saved!!!
@@ -53,7 +69,8 @@ userSchema.pre("save", async function(next) {
     user.password = await bcrypt.hash(user.password, 8);
   }
 
-  next(); // we call next when we're done! If we don't use it it's gonna hang forever
+  next();
+  // we call next when we're done! If we don't use it it's gonna hang forever
   // thinking that we're gonna run some code before saving the user and actually
   // it is not gonna save the user
 });
