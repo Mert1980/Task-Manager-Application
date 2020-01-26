@@ -20,6 +20,9 @@ const jwt = require("jsonwebtoken");
 
 const myFunction = async () => {
   const token = jwt.sign({ _id: "abc123" }, "thisismynewcourse"); // return value of jwt.sign is a new token
-  console.log(token)
+  console.log(token);
+
+  const data = jwt.verify(token, "thisismynewcourse");
+  console.log(data);
 };
 myFunction();
