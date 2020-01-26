@@ -14,6 +14,14 @@ router.post("/users", async (req, res) => {
   }
 });
 
+router.post("/users/login", async (req, res) => {
+  try {
+    const user = await User.findByCredentials(req.body.email, req.body.password);
+  } catch (e) {
+
+  }
+});
+
 router.get("/users", async (req, res) => {
   // If we live the Object blank, it fetches all of the users from database
   try {
@@ -51,12 +59,12 @@ router.patch("/users/:id", async (req, res) => {
     return res.status(400).send({ error: "Invalid updates!" });
   }
   try {
-// findByIdAndUpdate method bypasses mongoose. It performs a direct operation on the database
+    // findByIdAndUpdate method bypasses mongoose. It performs a direct operation on the database
     const user = await User.findById(req.params.id);
 
-// we use bracket notation to access a property dynamically
-    updates.forEach(update => user[update] = req.body[update]);
-    
+    // we use bracket notation to access a property dynamically
+    updates.forEach(update => (user[update] = req.body[update]));
+
     await user.save();
 
     if (!user) {
