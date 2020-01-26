@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -39,8 +40,24 @@ const userSchema = new mongoose.Schema({
       }
     }
   }
-})
+});
+
+// Arrow functions don't bind 'this'
+userSchema.pre("save", async function(next) {
+  // 'this' gives us access to the individual user that's about to be saved!!!
+  const user = this;
+
+  // first make sure the password has been created or modified. We prevent the password
+  // to be hashed if that's already been hashed before
+  if (user.isModified("password")) {
+    user.password = await bcrypt.hash(user.password, 8);
+  }
+
+  next(); // we call next when we're done! If we don't use it it's gonna hang forever
+  // thinking that we're gonna run some code before saving the user and actually
+  // it is not gonna save the user
+});
 
 const User = mongoose.model("User", userSchema);
 
-module.exports = User
+module.exports = User;
