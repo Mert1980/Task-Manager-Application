@@ -10,12 +10,16 @@ const port = process.env.port || 3000;
 //"next()" is specific to register the middelware.
 //If “do something” function doesn’t call “next()”,
 //route handler doesn’t ever going to run.
+// app.use((req, res, next) => {
+//   if (req.method === "GET") {
+//     res.send("GET requests are disabled");
+//   } else {
+//     next();
+//   }
+// });
+
 app.use((req, res, next) => {
-  if (req.method === "GET") {
-    res.send("GET requests are disabled");
-  } else {
-    next();
-  }
+  res.status(503).send("Site is under maintenance. Please try again soon");
 });
 
 app.use(express.json()); // this configures express to automatically parse JSON into
