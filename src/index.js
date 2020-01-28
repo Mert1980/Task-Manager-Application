@@ -7,6 +7,11 @@ const taskRouter = require("./routers/task");
 const app = express();
 const port = process.env.port || 3000;
 
+app.use((req, res, next)=>{
+  console.log(req.method, req.path);
+  next();
+})
+
 app.use(express.json()); // this configures express to automatically parse JSON into
 // object so we can access it in our request handlers
 app.use(userRouter);
