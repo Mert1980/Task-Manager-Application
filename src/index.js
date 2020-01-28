@@ -12,6 +12,12 @@ app.use(express.json()); // this configures express to automatically parse JSON 
 app.use(userRouter);
 app.use(taskRouter);
 
+// 
+// Without middelware: new request --> run route handler
+//
+// With middelware: new request --> do something --> run route handler
+//
+
 app.listen(port, () => {
   console.log(`Server is up on port ${port}`);
 });
