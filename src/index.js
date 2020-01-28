@@ -7,6 +7,9 @@ const taskRouter = require("./routers/task");
 const app = express();
 const port = process.env.port || 3000;
 
+//"next()" is specific to register the middelware. 
+//If “do something” function doesn’t call “next()”, 
+//route handler doesn’t ever going to run.
 app.use((req, res, next)=>{
   console.log(req.method, req.path);
   next();
