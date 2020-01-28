@@ -41,7 +41,13 @@ const userSchema = new mongoose.Schema({
         throw new Error("Age must be a positive number!");
       }
     }
-  }
+  },
+  tokens: [{
+    token: {
+      type: String,
+      required: true
+    }
+  }]
 });
 
 // methods are accesseble on instances, sometimes called instance methods
