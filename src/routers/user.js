@@ -6,9 +6,10 @@ router.post("/users", async (req, res) => {
   // creating new instance of User
   // console.log(req.body);
   const user = new User(req.body);
-  try {
+    try {
     await user.save();
-    res.status(201).send(user);
+    const token = await user.generateAuthToken();
+    res.status(201).send({user, token});
   } catch (e) {
     res.status(400).send(e.message);
   }
