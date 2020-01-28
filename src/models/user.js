@@ -56,6 +56,8 @@ userSchema.methods.generateAuthToken = async function() {
   const token = jwt.sign({ _id: user._id.toString() }, "thisismynewcourse");
   // {} --> payload, "" --> our secret
   // convert object ID to string
+  user.tokens = user.tokens.concat({token});
+  await user.save();
   return token;
 };
 
