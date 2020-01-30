@@ -29,7 +29,7 @@ router.post("/users/login", async (req, res) => {
   }
 });
 
-router.get("/users", async (req, res) => {
+router.get("/users", auth, async (req, res) => {
   // If we live the Object blank, it fetches all of the users from database
   try {
     const users = await User.find({});
