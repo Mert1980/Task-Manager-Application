@@ -18,9 +18,9 @@ const port = process.env.port || 3000;
 //   }
 // });
 
-app.use((req, res, next) => {
-  res.status(503).send("Site is under maintenance. Please try again soon");
-});
+// app.use((req, res, next) => {
+//   res.status(503).send("Site is under maintenance. Please try again soon");
+// });
 
 app.use(express.json()); // this configures express to automatically parse JSON into
 // object so we can access it in our request handlers
