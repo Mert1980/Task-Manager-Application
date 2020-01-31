@@ -4,7 +4,10 @@ const User = require("../models/user"); // to find token in database
 const auth = async (req, res, next) => {
   try {
     const token = req.header("Authorization").replace('Bearer ', '');
-    console.log(token);
+    const decoded = jwt.verify(token, 'thisismynewcourse');
+    const user = await User.findOne({id: decoded._id, "tokens.token": token });
+    // find a user with a correct ID who has authentication token still stored. 
+    // If the user logs out that means this token is still valid
   } catch (e) {
     res.status(401).send({ error: "Please authenticate!" });
   }
