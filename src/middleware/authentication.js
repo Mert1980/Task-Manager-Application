@@ -3,11 +3,19 @@ const User = require("../models/user"); // to find token in database
 
 const auth = async (req, res, next) => {
   try {
-    const token = req.header("Authorization").replace('Bearer ', '');
+    const token = req.header('Authorization').replace('Bearer ', '');
+    console.log(token)
     const decoded = jwt.verify(token, 'thisismynewcourse');
-    const user = await User.findOne({id: decoded._id, 'tokens.token': token });
+    console.log(decoded)
     // find a user with a correct ID who has authentication token still stored. 
-    // If the user logs out that means this token is still valid
+    
+    const user = await User.findOne({id: decoded._id, 'tokens.token': token });
+    console.log(user)
+    
+    /* When the user logs out we will delete the auth token from the tokens
+     array of the user. So if the user tries to authenticate with the same token,
+     it won't work because the token  was deleted from the tokens array
+     by the log out function.*/
 
     if (!user) {
       throw new Error();
@@ -16,6 +24,7 @@ const auth = async (req, res, next) => {
     req.user = user;
     next();
   } catch (e) {
+     console.log(e)
     res.status(401).send({ error: "Please authenticate!" });
   }
 };

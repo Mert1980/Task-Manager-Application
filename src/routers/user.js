@@ -1,6 +1,6 @@
 const express = require("express");
 const router = new express.Router();
-const auth = require("../middelware/authentication");
+const auth = require("../middleware/authentication");
 const User = require("../models/user");
 
 router.post("/users", async (req, res) => {
@@ -28,18 +28,12 @@ router.post("/users/login", async (req, res) => {
     res.status(400).send();
   }
 });
-
-router.get("/users", auth, async (req, res) => {
-  // If we live the Object blank, it fetches all of the users from database
-  try {
-    const users = await User.find({});
-    res.send(users);
-  } catch (e) {
-    res.status(500).send();
-  }
+// This function is going to run if the user is actually authenticated
+router.get("/users/me", auth, async (req, res) => { 
+   res.send(req.user);
 });
 
-router.get("/users/:id", async (req, res) => {
+router.get("/users/:id", auth, async (req, res) => {
   console.log(req.params);
   // route parameters--> id can be named by anything else
   const _id = req.params.id;
