@@ -9,7 +9,7 @@ const auth = async (req, res, next) => {
     console.log(decoded)
     // find a user with a correct ID who has authentication token still stored. 
     
-    const user = await User.findOne({id: decoded._id, 'tokens.token': token });
+    const user = await User.findOne({_id: decoded._id, 'tokens.token': token });
     console.log(user)
     
     /* When the user logs out we will delete the auth token from the tokens
@@ -29,3 +29,4 @@ const auth = async (req, res, next) => {
   }
 };
 module.exports = auth;
+
