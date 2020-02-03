@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -11,6 +12,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
     trim: true,
     lowercase: true,
     validate(value) {
@@ -39,9 +41,43 @@ const userSchema = new mongoose.Schema({
         throw new Error("Age must be a positive number!");
       }
     }
-  }
+  },
+  tokens: [{
+    token: {
+      type: String,
+      required: true
+    }
+  }]
 });
 
+// methods are accesseble on instances, sometimes called instance methods
+userSchema.methods.generateAuthToken = async function() {
+  const user = this;
+  const token = jwt.sign({ _id: user._id.toString() }, "thisismynewcourse");// thisismynewcourse is the secret code to generate the token
+  // {} --> payload, "" --> our secret
+  // convert object ID to string
+  user.tokens = user.tokens.concat({token});
+  await user.save();
+  return token;
+};
+
+// static methods are accesseble on modal, sometimes called modal methods
+userSchema.statics.findByCredentials = async (email, password) => {
+  const user = await User.findOne({ email: email }); // shorthand syntax --> {email}
+
+  if (!user) {
+    throw new Error("Unable to login!");
+  }
+  const isMatch = await bcrypt.compare(password, user.password);
+
+  if (!isMatch) {
+    throw new Error("Unable to login!");
+  }
+
+  return user;
+};
+
+// Hash the plain text password before saving
 // Arrow functions don't bind 'this'
 userSchema.pre("save", async function(next) {
   // 'this' gives us access to the individual user that's about to be saved!!!
@@ -53,7 +89,8 @@ userSchema.pre("save", async function(next) {
     user.password = await bcrypt.hash(user.password, 8);
   }
 
-  next(); // we call next when we're done! If we don't use it it's gonna hang forever
+  next();
+  // we call next when we're done! If we don't use it it's gonna hang forever
   // thinking that we're gonna run some code before saving the user and actually
   // it is not gonna save the user
 });

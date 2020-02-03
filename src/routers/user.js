@@ -1,30 +1,39 @@
 const express = require("express");
 const router = new express.Router();
+const auth = require("../middleware/authentication");
 const User = require("../models/user");
 
 router.post("/users", async (req, res) => {
   // creating new instance of User
   // console.log(req.body);
   const user = new User(req.body);
-  try {
+    try {
     await user.save();
-    res.status(201).send(user);
+    const token = await user.generateAuthToken();
+    res.status(201).send({user, token});
   } catch (e) {
     res.status(400).send(e.message);
   }
 });
 
-router.get("/users", async (req, res) => {
-  // If we live the Object blank, it fetches all of the users from database
+router.post("/users/login", async (req, res) => {
   try {
-    const users = await User.find({});
-    res.send(users);
+    const user = await User.findByCredentials(
+      req.body.email,
+      req.body.password
+    );
+    const token = await user.generateAuthToken();
+    res.send({user, token});
   } catch (e) {
-    res.status(500).send();
+    res.status(400).send();
   }
 });
+// This function is going to run if the user is actually authenticated
+router.get("/users/me", auth, async (req, res) => { 
+   res.send(req.user);
+});
 
-router.get("/users/:id", async (req, res) => {
+router.get("/users/:id", auth, async (req, res) => {
   console.log(req.params);
   // route parameters--> id can be named by anything else
   const _id = req.params.id;
@@ -51,12 +60,12 @@ router.patch("/users/:id", async (req, res) => {
     return res.status(400).send({ error: "Invalid updates!" });
   }
   try {
-// findByIdAndUpdate method bypasses mongoose. It performs a direct operation on the database
+    // findByIdAndUpdate method bypasses mongoose. It performs a direct operation on the database
     const user = await User.findById(req.params.id);
 
-// we use bracket notation to access a property dynamically
-    updates.forEach(update => user[update] = req.body[update]);
-    
+    // we use bracket notation to access a property dynamically
+    updates.forEach(update => (user[update] = req.body[update]));
+
     await user.save();
 
     if (!user) {
