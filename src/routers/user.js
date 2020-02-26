@@ -18,12 +18,10 @@ router.post("/users", async (req, res) => {
 
 router.post("/users/login", async (req, res) => {
   try {
-    const user = await User.findByCredentials(
-      req.body.email,
-      req.body.password
-    );
+    const user = await User.findByCredentials(req.body.email,req.body.password);
     const token = await user.generateAuthToken();
-    res.send({user, token});
+    console.log(user)
+    res.send({user : user.readPublicProfile(), token});
   } catch (e) {
     res.status(400).send();
   }
@@ -60,7 +58,7 @@ router.get("/users/me", auth, async (req, res) => {
 });
 
 router.get("/users/:id", auth, async (req, res) => {
-  console.log(req.params);
+  // console.log(req.params);
   // route parameters--> id can be named by anything else
   const _id = req.params.id;
   try {
@@ -109,7 +107,7 @@ router.delete("/users/:id", async (req, res) => {
     if (!user) {
       return res.status(404).send();
     }
-    console.user(req.user)
+    // console.user(req.user)
     res.send(user);
   } catch (e) {
     res.status(500).send();
