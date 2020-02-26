@@ -4,9 +4,9 @@ const User = require("../models/user"); // to find token in database
 const auth = async (req, res, next) => {
   try {
     const token = req.header('Authorization').replace('Bearer ', '');
-    console.log(token)
+    
     const decoded = jwt.verify(token, 'thisismynewcourse');
-    console.log(decoded)
+    
     // find a user with a correct ID who has authentication token still stored. 
     
     const user = await User.findOne({_id: decoded._id, 'tokens.token': token });
@@ -21,6 +21,7 @@ const auth = async (req, res, next) => {
       throw new Error();
     }
 
+    req.token = token; // this will be used when the user logs out. We can access this in logout route handler
     req.user = user;
     next();
   } catch (e) {
