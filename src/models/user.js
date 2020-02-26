@@ -52,7 +52,7 @@ const userSchema = new mongoose.Schema({
 
 // this method is created to hide private data while sending res.user info to the client.
 // in order to use "this" key word I used regular function instead of an arrow function
-userSchema.methods.readPublicProfile = function() {
+userSchema.methods.toJSON = function() {
   const user = this
   const userObject = user.toObject() //--> Documents have a toObject method which converts the mongoose document into a plain javascript object
 
