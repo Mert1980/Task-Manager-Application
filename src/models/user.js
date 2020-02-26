@@ -57,7 +57,7 @@ userSchema.methods.toJSON = function() {
   const userObject = user.toObject() //--> Documents have a toObject method which converts the mongoose document into a plain javascript object
 
   delete userObject.password
-  delete userObject.tokes
+  delete userObject.tokens
 
   return userObject
 
