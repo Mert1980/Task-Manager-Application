@@ -28,6 +28,20 @@ router.post("/users/login", async (req, res) => {
     res.status(400).send();
   }
 });
+
+// if user logs out, the auth token will be removed from tokens array
+router.post("/users/logout", auth, async(req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter(token => {
+      return token.token !== req.token
+    })
+    await req.user.save()
+    res.send()
+  } catch (e) {
+    res.status(500).send()
+  } 
+})
+
 // This function is going to run if the user is actually authenticated
 router.get("/users/me", auth, async (req, res) => { 
    res.send(req.user);
@@ -83,6 +97,7 @@ router.delete("/users/:id", async (req, res) => {
     if (!user) {
       return res.status(404).send();
     }
+    console.user(req.user)
     res.send(user);
   } catch (e) {
     res.status(500).send();
