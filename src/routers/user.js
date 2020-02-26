@@ -20,7 +20,7 @@ router.post("/users/login", async (req, res) => {
   try {
     const user = await User.findByCredentials(req.body.email,req.body.password);
     const token = await user.generateAuthToken();
-    console.log(user)
+    
     res.send({user, token});
   } catch (e) {
     res.status(400).send();
@@ -57,21 +57,21 @@ router.get("/users/me", auth, async (req, res) => {
    res.send(req.user);
 });
 
-router.get("/users/:id", auth, async (req, res) => {
+// router.get("/users/:id", auth, async (req, res) => {
   // console.log(req.params);
   // route parameters--> id can be named by anything else
-  const _id = req.params.id;
-  try {
-    const user = await User.findById(_id);
-    if (!user) {
+  // const _id = req.params.id;
+  // try {
+  //   const user = await User.findById(_id);
+  //   if (!user) {
       // mongodb does not return an error if the ID does not match up in database
-      return res.status(404).send(); // 404: not found
-    }
-    res.send(user);
-  } catch (e) {
-    res.status(500).send();
-  }
-});
+//       return res.status(404).send(); // 404: not found
+//     }
+//     res.send(user);
+//   } catch (e) {
+//     res.status(500).send();
+//   }
+// });
 
 router.patch("/users/:id", async (req, res) => {
   const updates = Object.keys(req.body);

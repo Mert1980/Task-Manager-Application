@@ -52,11 +52,11 @@ const pet = {
   name : "Tekir"
 }
 
-pet.toJSON = function (){
-  console.log(this)
+// pet.toJSON = function (){
+//   console.log(this)
    
-  return this
-}
+//   return this
+// }
 
-console.log(JSON.stringify(pet))
+// console.log(JSON.stringify(pet))
 
