@@ -54,8 +54,15 @@ const userSchema = new mongoose.Schema({
 // in order to use "this" key word I used regular function instead of an arrow function
 userSchema.methods.toJSON = function() {
   const user = this
-  const userObject = user.toObject() //--> Documents have a toObject method which converts the mongoose document into a plain javascript object
-
+  
+/* 
+Documents have a toObject method which converts the mongoose document into a plain
+javascript object. The toObject method is a method provided by Mongoose to clean up
+the object so it removes all of the metadata and methods (like .save() or .toObject())
+that Mongoose attaches to it. It just becomes a regular object afterward.
+*/
+  const userObject = user.toObject() 
+  // console.log(userObject)
   delete userObject.password
   delete userObject.tokens
 
