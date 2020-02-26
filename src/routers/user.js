@@ -41,6 +41,18 @@ router.post("/users/logout", auth, async(req, res) => {
     res.status(500).send()
   } 
 })
+/* This route deletes all the tokens, if a user logs out from a device it logs out 
+    from all the devices that the user previously logged in*/
+router.post('/users/logoutAll', auth, async(req, res) => {
+  try {
+    req.user.tokens = []
+    await req.user.save()
+    res.send()
+  } catch (e) {
+    res.status(500).send()
+  }
+})
+
 
 // This function is going to run if the user is actually authenticated
 router.get("/users/me", auth, async (req, res) => { 
