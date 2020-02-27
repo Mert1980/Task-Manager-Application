@@ -75,7 +75,9 @@ router.get("/users/:id", auth, async (req, res) => {
   }
 });
 */
-router.patch("/users/:id", async (req, res) => {
+
+// we shoud only be able to update our own profile
+router.patch("/users/me", auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ["name", "email", "password", "age"];
   const isValidOperation = updates.every(update =>
@@ -87,17 +89,17 @@ router.patch("/users/:id", async (req, res) => {
   }
   try {
     // findByIdAndUpdate method bypasses mongoose. It performs a direct operation on the database
-    const user = await User.findById(req.params.id);
+    // const user = await User.findById(req.params.id);
 
     // we use bracket notation to access a property dynamically
-    updates.forEach(update => (user[update] = req.body[update]));
+    updates.forEach(update => (req.user[update] = req.body[update]));
 
-    await user.save();
+    await req.user.save();
 
-    if (!user) {
-      return res.status(404).send();
-    }
-    res.send(user);
+    // if (!user) {
+    //   return res.status(404).send();
+    // }
+    res.send(req.user);
   } catch (e) {
     res.status(400).send(e.message);
   }
