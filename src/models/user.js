@@ -50,6 +50,12 @@ const userSchema = new mongoose.Schema({
   }]
 });
 
+userSchema.virtual('tasks', {
+  ref:'Task',
+  localField:'_id',
+  foreignField:'owner'
+})
+
 // this method is created to hide private data while sending res.user info to the client.
 // in order to use "this" key word I used regular function instead of an arrow functionn 
 // when res.send({user, token}) is called in routers, it automatically call JSON.stringify

@@ -65,13 +65,19 @@ console.log(JSON.stringify(pet))
 */
 
 const Task = require('./models/task')
+const User = require('./models/user')
 
 const main = async () => {
-    const task = await Task.findById('5e57ab32737a5419b2a8c39e')
-    // populate the data from a relationship using the code below, so that we can access 
-    // not only the ID of the user but also entire profile. Finds user who created the task
-    await task.populate('owner').execPopulate();
-    console.log(task.owner)
+    // const task = await Task.findById('5e57ab32737a5419b2a8c39e')
+        /* populate the data from a relationship using the code below, so that we can access 
+           not only the ID of the user but also entire profile. Finds user who created the task */
+    // await task.populate('owner').execPopulate();
+    // console.log(task.owner)
+
+    const user = await User.findById('5e57a8538a262d1835a8a9e4')
+    await user.populate('tasks').execPopulate()
+    console.log(user.tasks)
+
 }
 main()
 
