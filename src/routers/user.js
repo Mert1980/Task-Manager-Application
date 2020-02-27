@@ -116,7 +116,7 @@ router.delete("/users/me", auth, async (req, res) => {
      the profile of an authenticated user. */
   try{
     await req.user.remove()
-    res.send(user);
+    res.send(req.user); //Since we don't have a stand alone user variable I returned req.user
   } catch (e) {
     res.status(500).send();
   }
