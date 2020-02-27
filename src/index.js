@@ -69,7 +69,7 @@ const Task = require('./models/task')
 const main = async () => {
     const task = await Task.findById('5e57ab32737a5419b2a8c39e')
     // populate the data from a relationship using the code below, so that we can access 
-    // not only the ID of the user but also entire profile
+    // not only the ID of the user but also entire profile. Finds user who created the task
     await task.populate('owner').execPopulate();
     console.log(task.owner)
 }
