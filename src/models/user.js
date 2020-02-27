@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Task = require("./task")
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -50,10 +51,39 @@ const userSchema = new mongoose.Schema({
   }]
 });
 
+userSchema.virtual('tasks', {
+  ref:'Task',
+  localField:'_id',
+  foreignField:'owner'
+})
+
+// this method is created to hide private data while sending res.user info to the client.
+// in order to use "this" key word I used regular function instead of an arrow functionn 
+// when res.send({user, token}) is called in routers, it automatically call JSON.stringify
+// which calls toJSON method behind the scenes. In order to reach JS Object we use
+// toJSON method and assign this to user variable.
+userSchema.methods.toJSON = function() {
+  const user = this
+  
+/* 
+Documents have a toObject method which converts the mongoose document into a plain
+javascript object. The toObject method is a method provided by Mongoose to clean up
+the object so it removes all of the metadata and methods (like .save() or .toObject())
+that Mongoose attaches to it. It just becomes a regular object afterward.
+*/
+  const userObject = user.toObject() 
+  // console.log(userObject)
+  delete userObject.password
+  delete userObject.tokens
+
+  return userObject
+
+}
+
 // methods are accesseble on instances, sometimes called instance methods
 userSchema.methods.generateAuthToken = async function() {
   const user = this;
-  const token = jwt.sign({ _id: user._id.toString() }, "thisismynewcourse");// thisismynewcourse is the secret code to generate the token
+  const token = jwt.sign({ _id: user._id.toString() }, 'thisismynewcourse');// thisismynewcourse is the secret code to generate the token
   // {} --> payload, "" --> our secret
   // convert object ID to string
   user.tokens = user.tokens.concat({token});
@@ -95,6 +125,15 @@ userSchema.pre("save", async function(next) {
   // it is not gonna save the user
 });
 
+// Delete a user task when user is removed
+userSchema.pre('remove', async function(next){
+  const user = this
+  await Task.deleteMany({owner: user._id})
+  next()
+})
+
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
+

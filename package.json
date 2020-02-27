@@ -20,12 +20,11 @@
   "homepage": "https://github.com/Mert1980/Task-Manager-Application#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongodb": "^3.4.1",
-    "mongoose": "^5.8.4",
-    "validator": "^12.1.0"
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
+    "mongodb": "^3.1.10",
+    "mongoose": "^5.3.16",
+    "validator": "^10.9.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
