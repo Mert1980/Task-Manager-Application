@@ -104,12 +104,17 @@ router.patch("/users/:id", async (req, res) => {
 });
 
 router.delete("/users/me", auth, async (req, res) => {
-  const user = await User.findByIdAndDelete(req.user._id);
-  try {
-    if (!user) {
-      return res.status(404).send();
-    }
-    // console.user(req.user)
+
+  // const user = await User.findByIdAndDelete(req.user._id);
+  // try {
+  //   if (!user) {
+  //     return res.status(404).send();
+  //   }
+  // --> we don't need above lines since we verify the existence of use
+  //     in auth middleware. So I used an async mongoose method to remove
+  //     the profile of an authenticated user.
+  try{
+    await req.user.remove()
     res.send(user);
   } catch (e) {
     res.status(500).send();
