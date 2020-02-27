@@ -10,7 +10,7 @@ const auth = async (req, res, next) => {
     // find a user with a correct ID who has authentication token still stored. 
     
     const user = await User.findOne({_id: decoded._id, 'tokens.token': token });
-    // console.log(user)
+
     
     /* When the user logs out we will delete the auth token from the tokens
      array of the user. So if the user tries to authenticate with the same token,
