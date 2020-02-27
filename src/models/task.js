@@ -12,7 +12,8 @@ const Task = mongoose.model("Task", {
     },
     owner: {
       type:mongoose.Schema.Types.ObjectId,
-      required:true
+      required:true,
+      ref:'User' //--> User is the model name that we want to make a relationship btwn Task and User models
     }
   });
 
