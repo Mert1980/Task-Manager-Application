@@ -110,9 +110,10 @@ router.delete("/users/me", auth, async (req, res) => {
   //   if (!user) {
   //     return res.status(404).send();
   //   }
-  // --> we don't need above lines since we verify the existence of use
-  //     in auth middleware. So I used an async mongoose method to remove
-  //     the profile of an authenticated user.
+  
+  /* we don't need above lines since we verify the existence of use
+     in auth middleware. So I used an async mongoose method to remove
+     the profile of an authenticated user. */
   try{
     await req.user.remove()
     res.send(user);
