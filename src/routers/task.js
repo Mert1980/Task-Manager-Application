@@ -18,7 +18,10 @@ router.post("/tasks", auth, async (req, res) => {
   });
 
   // GET /tasks?completed:true
-router.get("/tasks", auth, async (req, res) => {
+  // GET /tasks?limit=10&skip=10 --> this skips the 1st page and returns the 2nd page
+  // --> limit allows us to limit the number of results that we get back for any given request
+  // When the user provides a number in query it is gonna be always a string. So we have to parse it.
+  router.get("/tasks", auth, async (req, res) => {
     const match = {}
     // console.log(req.query) --> { completed: 'true' }
     if(req.query.completed){
@@ -29,7 +32,10 @@ router.get("/tasks", auth, async (req, res) => {
       // const tasks = await Task.find({owner:req.user._id}); --> 1st way
       await req.user.populate({
         path:'tasks',
-        match
+        match,
+        options: {
+          limit:parseInt(req.query.limit)
+        }
       }).execPopulate()
       res.send(req.user.tasks);
     } catch (e) {
