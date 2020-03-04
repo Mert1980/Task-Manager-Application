@@ -7,6 +7,16 @@ const taskRouter = require("./routers/task");
 const app = express();
 const port = process.env.port || 3000;
 
+
+const multer = require('multer')
+const upload  = multer({
+  dest: 'images' // dest---> destination where the images will be stored
+})
+// configure the express server to accept and save the files that are uploaded to it
+app.post('/upload', upload.single('upload'),(req, res)=>{
+  res.send()
+})
+
 /* 
 "next()" is specific to register the middelware. If “do something” function doesn’t call 
 “next()”, route handler doesn’t ever going to run.
