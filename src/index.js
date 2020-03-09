@@ -10,7 +10,16 @@ const port = process.env.port || 3000;
 
 const multer = require('multer')
 const upload  = multer({
-  dest: 'images' // dest---> destination where the images will be stored
+  dest: 'images', // dest---> destination where the images will be stored
+  limits: {
+    fileSize: 1000000 // in bytes (1 MB)
+  },
+  fileFilter(req, file, callback){
+    if(!file.originalname.match(/\.(doc|docx)$/)) {
+      return callback(new Error('Please upload a Word document!'))
+    }
+    callback(undefined, true) // undefined means nothing went wrong, true means upload should be expected
+  }
 })
 // configure the express server to accept and save the files that are uploaded to
 app.post('/upload', upload.single('upload'),(req, res)=>{
