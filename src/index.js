@@ -12,7 +12,7 @@ const multer = require('multer')
 const upload  = multer({
   dest: 'images' // dest---> destination where the images will be stored
 })
-// configure the express server to accept and save the files that are uploaded to it
+// configure the express server to accept and save the files that are uploaded to
 app.post('/upload', upload.single('upload'),(req, res)=>{
   res.send()
 })
