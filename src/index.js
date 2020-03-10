@@ -24,6 +24,8 @@ const upload  = multer({
 // configure the express server to accept and save the files that are uploaded to
 app.post('/upload', upload.single('upload'),(req, res)=>{
   res.send()
+}, (error, req, res, next)=>{
+  res.status(400).send({error: error.message})
 })
 
 /* 
