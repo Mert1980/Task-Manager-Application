@@ -80,6 +80,7 @@ that Mongoose attaches to it. It just becomes a regular object afterward.
   // console.log(userObject)
   delete userObject.password
   delete userObject.tokens
+  delete userObject.avatar
 
   return userObject
 
