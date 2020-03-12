@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Mert1980/Task-Manager-Application#readme",
   "dependencies": {
+    "@sendgrid/mail": "^6.5.4",
     "bcryptjs": "^2.4.3",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0",
