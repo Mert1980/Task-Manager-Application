@@ -7,6 +7,28 @@ const taskRouter = require("./routers/task");
 const app = express();
 const port = process.env.port || 3000;
 
+/* ****** How to set up multer ******
+
+const multer = require('multer')
+const upload  = multer({
+  dest: 'images', // dest---> destination where the images will be stored
+  limits: {
+    fileSize: 1000000 // in bytes (1 MB)
+  },
+  fileFilter(req, file, callback){
+    if(!file.originalname.match(/\.(doc|docx)$/)) {
+      return callback(new Error('Please upload a Word document!'))
+    }
+    callback(undefined, true) // undefined means nothing went wrong, true means upload should be expected
+  }
+})
+// configure the express server to accept and save the files that are uploaded to
+app.post('/upload', upload.single('upload'),(req, res)=>{
+  res.send()
+}, (error, req, res, next)=>{
+  res.status(400).send({error: error.message})
+})
+*/
 /* 
 "next()" is specific to register the middelware. If “do something” function doesn’t call 
 “next()”, route handler doesn’t ever going to run.
@@ -64,10 +86,10 @@ console.log(JSON.stringify(pet))
 ***EXAMPLE*** how to make connection between two models
 */
 
-const Task = require('./models/task')
-const User = require('./models/user')
+// const Task = require('./models/task')
+// const User = require('./models/user')
 
-const main = async () => {
+// const main = async () => {
     // const task = await Task.findById('5e57ab32737a5419b2a8c39e')
         /* populate the data from a relationship using the code below, so that we can access 
            not only the ID of the user but also entire profile. Finds user who created the task */
@@ -79,8 +101,8 @@ const main = async () => {
     // await user.populate('tasks').execPopulate()
     // console.log(user.tasks)
 
-}
-main()
+// }
+// main()
 
 
 
