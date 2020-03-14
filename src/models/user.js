@@ -89,7 +89,7 @@ that Mongoose attaches to it. It just becomes a regular object afterward.
 // methods are accesseble on instances, sometimes called instance methods
 userSchema.methods.generateAuthToken = async function() {
   const user = this;
-  const token = jwt.sign({ _id: user._id.toString() }, 'thisismynewcourse');// thisismynewcourse is the secret code to generate the token
+  const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);// thisismynewcourse is the secret code to generate the token
   // {} --> payload, "" --> our secret
   // convert object ID to string
   user.tokens = user.tokens.concat({token});
