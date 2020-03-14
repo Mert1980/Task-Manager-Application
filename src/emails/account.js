@@ -13,8 +13,20 @@ const sendWelcomeEmail = (email, name) => {
     })
 }
 
+const sendCancelationEmail = (email, name) => {
+    sgMail.send({
+        to: email,
+        from: 'softwaredeveloperjava80@gmail.com',
+        subject: 'Canccellation of the user account',
+        text:`Dear ${name}, you have successfuly cancelled your account. To improve our customer 
+            satisfaction, we would like to hear the reason of your cancellation`
+        
+    })
+}
+
 module.exports = {
-    sendWelcomeEmail
+    sendWelcomeEmail,
+    sendCancelationEmail
 }
 
 // sgMail.send({

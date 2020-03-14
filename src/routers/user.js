@@ -3,7 +3,7 @@ const multer = require('multer')
 const sharp = require('sharp')
 const User = require("../models/user");
 const auth = require("../middleware/authentication");
-const {sendWelcomeEmail} = require('../emails/account')
+const {sendWelcomeEmail, sendCancelationEmail} = require('../emails/account')
 const router = new express.Router();
 
 router.post("/users", async (req, res) => {
@@ -122,6 +122,7 @@ router.delete("/users/me", auth, async (req, res) => {
      the profile of an authenticated user. */
   try{
     await req.user.remove()
+    sendCancelationEmail(req.user.email, req.user.name)
     res.send(req.user); //Since we don't have a stand alone user variable I returned req.user
   } catch (e) {
     res.status(500).send();
