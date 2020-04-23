@@ -1,7 +1,8 @@
 // CRUD create read update delete
-
+const path = require('path');
+require('dotenv').config({path: path.resolve(process.cwd(), 'config', '.env'), debug: true});
 const { MongoClient, ObjectID } = require("mongodb"); // --> destructuring mongodb object
-require("dotenv").config();
+
 
 const connectionURL = `mongodb://Mert:${process.env.MONGODB_PSWD}@127.0.0.1:27017`;
 const databaseName = "task-manager";
