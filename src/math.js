@@ -1,4 +1,4 @@
-const calculateTip = (total, tipPercentage) => total + (total * tipPercentage)
+const calculateTip = (total, tipPercentage = .25) => total + (total * tipPercentage)
 
 // {
 //   const tip = total * tipPercentage;
