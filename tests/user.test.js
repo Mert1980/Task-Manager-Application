@@ -1,12 +1,12 @@
 const request = require("supertest");
 const app = require("../src/app");
-const User = require('../src/models/user')
+const User = require("../src/models/user");
 
 // This function runs before each test case in this test suite
-beforeEach(() => {
-  console.log("beforeEach");
+// Delete all the users before creating a new user in database
+beforeEach(async () => {
+  await User.deleteMany();
 });
-
 
 // Test signup router
 // This test case fails 2nd time (due to duplication of mail address )
