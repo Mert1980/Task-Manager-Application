@@ -2,6 +2,7 @@ const request = require("supertest");
 const app = require("../src/app");
 const User = require("../src/models/user");
 
+// Create a new user 
 const userOne = {
     name: "Yigit",
     email: "example@gmail.com",
