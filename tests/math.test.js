@@ -2,6 +2,7 @@ const {
   calculateTip,
   celsiusToFahrenheit,
   fahrenheitToCelsius,
+  add,
 } = require("../src/math");
 
 // Why tests?
@@ -44,9 +45,21 @@ test("Should convert 0 C to 32 F", () => {
   expect(temp).toBe(32);
 });
 
-test("Async test demo", (done) => {
-  setTimeout(() => {
-    expect(1).toBe(2);
-    done()
-  }, 2000);
+// test("Async test demo", (done) => {
+//   setTimeout(() => {
+//     expect(1).toBe(2);
+//     done()
+//   }, 2000);
+// });
+
+test("Should add numbers", (done) => {
+  add(2, 3).then((sum) => {
+    expect(sum).toBe(5);
+    done();
+  });
 });
+
+test('Should add numbers', async () => {
+    const sum = await add(2,5);
+    expect(sum).toBe(7)
+})

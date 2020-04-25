@@ -21,8 +21,20 @@ const celsiusToFahrenheit = (temp) => {
 // 3. Create "Should convert 0 C to 32 F"
 // 4. Run the Jest to test your work!
 
+const add = (a, b) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (a < 0 || b < 0) {
+          return reject("Numbers must be non-negative");
+        }
+        resolve(a + b);
+      }, 2000);
+    });
+  };
+
 module.exports = { 
     calculateTip,
     fahrenheitToCelsius,
-    celsiusToFahrenheit
+    celsiusToFahrenheit,
+    add
 };
