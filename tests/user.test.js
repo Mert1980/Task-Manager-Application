@@ -63,6 +63,7 @@ test("Should not login nonexisting user", async () => {
     .expect(400);
 });
 
+// test for authenticated user
 test("Should get profile user", async () => {
   await request(app)
   .get('/users/me')
@@ -70,3 +71,12 @@ test("Should get profile user", async () => {
   .send()
   .expect(200);
 });
+
+// test for unauthenticated user
+test('Should not get profile for unauthenticated user', async () => {
+await request(app)
+  .get('/users/me')
+  .send()
+  .expect(401)
+})
+
