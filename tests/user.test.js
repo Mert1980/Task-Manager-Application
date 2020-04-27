@@ -31,7 +31,7 @@ beforeEach(async () => {
 // This test case fails 2nd time (due to duplication of mail address )
 // unless jest lifecycle methods are defined in advance
 test("Should signup a user", async () => {
-  await request(app)
+ const response = await request(app)
     .post("/users")
     .send({
       name: "Mert",
@@ -39,6 +39,9 @@ test("Should signup a user", async () => {
       password: "Green12345",
     })
     .expect(201);
+// Assert that the database changed correctly
+    const user = await User.findById(response.body.user._id)
+    expect(user).not.toBeNull()
 });
 
 // test login user
