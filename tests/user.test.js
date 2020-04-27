@@ -4,19 +4,20 @@ const mongoose = require("mongoose");
 const app = require("../src/app");
 const User = require("../src/models/user");
 
-
 // Create a user ID to test read profile and delete account
-const userOneId = new mongoose.Types.ObjectId()
+const userOneId = new mongoose.Types.ObjectId();
 
 // Create a new user to test other test cases (login, update etc)
 const userOne = {
-  _id : userOneId,
+  _id: userOneId,
   name: "Yigit",
   email: "example@gmail.com",
   password: "Green12345",
-  tokens: [{
-    token: jwt.sign({_id: userOneId}, process.env.JWT_SECRET)
-  }]
+  tokens: [
+    {
+      token: jwt.sign({ _id: userOneId }, process.env.JWT_SECRET),
+    },
+  ],
 };
 
 // This function runs before each test case in this test suite
@@ -60,4 +61,12 @@ test("Should not login nonexisting user", async () => {
       password: "Green12345",
     })
     .expect(400);
+});
+
+test("Should get profile user", async () => {
+  await request(app)
+  .get('/users/me')
+  .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+  .send()
+  .expect(200);
 });
