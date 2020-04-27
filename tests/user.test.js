@@ -31,7 +31,7 @@ beforeEach(async () => {
 // This test case fails 2nd time (due to duplication of mail address )
 // unless jest lifecycle methods are defined in advance
 test("Should signup a user", async () => {
- const response = await request(app)
+  const response = await request(app)
     .post("/users")
     .send({
       name: "Mert",
@@ -39,9 +39,20 @@ test("Should signup a user", async () => {
       password: "Green12345",
     })
     .expect(201);
-// Assert that the database changed correctly
-    const user = await User.findById(response.body.user._id)
-    expect(user).not.toBeNull()
+
+  // Assert that the database changed correctly
+  const user = await User.findById(response.body.user._id);
+  expect(user).not.toBeNull();
+
+  // Assertions about the response
+  expect(response.body).toMatchObject({
+    user: {
+      name: 'Mert',
+      email: 'mertdemirok80@gmail.com'
+    },
+    token: user.tokens[0].token
+  });
+  expect(user.password).not.toBe('Green12345')
 });
 
 // test login user
@@ -69,34 +80,27 @@ test("Should not login nonexisting user", async () => {
 // test for authenticated user
 test("Should get profile user", async () => {
   await request(app)
-  .get('/users/me')
-  .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
-  .send()
-  .expect(200);
+    .get("/users/me")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send()
+    .expect(200);
 });
 
 // test for unauthenticated user
-test('Should not get profile for unauthenticated user', async () => {
-await request(app)
-  .get('/users/me')
-  .send()
-  .expect(401)
-})
+test("Should not get profile for unauthenticated user", async () => {
+  await request(app).get("/users/me").send().expect(401);
+});
 
 // test for delete account
-test('Should delete account for authenticated user', async ()=>{
+test("Should delete account for authenticated user", async () => {
   await request(app)
-  .delete('/users/me')
-  .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
-  .send()
-  .expect(200);
-})
+    .delete("/users/me")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send()
+    .expect(200);
+});
 
 // test for fail in deleting account
-test('Should not delete account for unauthenticated user', async ()=>{
-  await request(app)
-  .delete('/users/me')
-  .send()
-  .expect(401);
-})
-
+test("Should not delete account for unauthenticated user", async () => {
+  await request(app).delete("/users/me").send().expect(401);
+});
