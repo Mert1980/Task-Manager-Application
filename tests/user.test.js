@@ -100,6 +100,9 @@ test("Should delete account for authenticated user", async () => {
     .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
     .send()
     .expect(200);
+// validate user is removed
+  const user = await User.findById(userOneId)
+  expect(user).toBeNull()
 });
 
 // test for fail in deleting account
