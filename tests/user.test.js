@@ -80,4 +80,20 @@ await request(app)
   .expect(401)
 })
 
+// test for delete account
+test('Should delete account for authenticated user', async ()=>{
+  await request(app)
+  .delete('/users/me')
+  .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+  .send()
+  .expect(200);
+})
+
+// test for fail in deleting account
+test('Should not delete account for unauthenticated user', async ()=>{
+  await request(app)
+  .delete('/users/me')
+  .send()
+  .expect(401);
+})
 
