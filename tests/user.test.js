@@ -47,27 +47,27 @@ test("Should signup a user", async () => {
   // Assertions about the response
   expect(response.body).toMatchObject({
     user: {
-      name: 'Mert',
-      email: 'mertdemirok80@gmail.com'
+      name: "Mert",
+      email: "mertdemirok80@gmail.com",
     },
-    token: user.tokens[0].token
+    token: user.tokens[0].token,
   });
-  expect(user.password).not.toBe('Green12345')
+  expect(user.password).not.toBe("Green12345");
 });
 
 // test login user
 // validate new token is saved
 test("Should login existing user", async () => {
- const response = await request(app)
+  const response = await request(app)
     .post("/users/login")
     .send({
       email: userOne.email,
       password: userOne.password,
     })
-   .expect(200)
-   const user = await User.findById(userOneId)
-   expect(response.body.token).toBe(user.tokens[1].token);
-  })
+    .expect(200);
+  const user = await User.findById(userOneId);
+  expect(response.body.token).toBe(user.tokens[1].token);
+});
 // test login failure
 test("Should not login nonexisting user", async () => {
   await request(app)
@@ -100,12 +100,23 @@ test("Should delete account for authenticated user", async () => {
     .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
     .send()
     .expect(200);
-// validate user is removed
-  const user = await User.findById(userOneId)
-  expect(user).toBeNull()
+  // validate user is removed
+  const user = await User.findById(userOneId);
+  expect(user).toBeNull();
 });
 
 // test for fail in deleting account
 test("Should not delete account for unauthenticated user", async () => {
   await request(app).delete("/users/me").send().expect(401);
+});
+
+// test image uploading
+test("Should upload avatar image", async () => {
+  await request(app)
+    .post("/users/me/avatar")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .attach("avatar", "tests/fixtures/profile-pic.jpg")
+    .expect(200);
+  const user = await User.findById(userOneId);
+  expect(user.avatar).toEqual(expect.any(Buffer));
 });
