@@ -1,7 +1,16 @@
 const request = require("supertest");
 const app = require("../src/app");
 const Task = require("../src/models/task");
-const { userOneId, userOne, setupDatabase } = require("../tests/fixtures/db");
+const {
+  userOneId,
+  userTwoId,
+  userOne,
+  userTwo,
+  taskOne,
+  taskTwo,
+  taskThree,
+  setupDatabase,
+} = require("../tests/fixtures/db");
 
 // This function runs before each test case in this test suite
 // Delete all the users before creating a new user in database
@@ -23,9 +32,20 @@ test("Should create task user", async () => {
 
 // test GET/tasks
 test("Should get the tasks for userOne", async () => {
-    const response = await request(app)
+  const response = await request(app)
     .get("/tasks")
     .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
     .expect(200);
-    expect(response.body.length).toEqual(2)
-})
+  expect(response.body.length).toEqual(2);
+});
+
+// test delete task security
+test("Should a user not delete other user's task", async () => {
+  await request(app)
+    .delete(`/tasks/${taskOne._id}`)
+    .set("Authorization", `Bearer ${userTwo.tokens[0].token}`)
+    .send()
+    .expect(404);
+    const task = await Task.findById(taskOne._id)
+    expect(task).not.toBeNull()
+});
