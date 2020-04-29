@@ -1,31 +1,11 @@
 const request = require("supertest");
-const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
 const app = require("../src/app");
 const User = require("../src/models/user");
-
-// Create a user ID to test read profile and delete account
-const userOneId = new mongoose.Types.ObjectId();
-
-// Create a new user to test other test cases (login, update etc)
-const userOne = {
-  _id: userOneId,
-  name: "Yigit",
-  email: "example@gmail.com",
-  password: "Green12345",
-  tokens: [
-    {
-      token: jwt.sign({ _id: userOneId }, process.env.JWT_SECRET),
-    },
-  ],
-};
+const {userOneId, userOne, setupDatabase} = require('../tests/fixtures/db')
 
 // This function runs before each test case in this test suite
 // Delete all the users before creating a new user in database
-beforeEach(async () => {
-  await User.deleteMany();
-  await new User(userOne).save();
-});
+beforeEach(setupDatabase);
 
 // Test signup router
 // This test case fails 2nd time (due to duplication of mail address )
