@@ -69,5 +69,8 @@ const setupDatabase = async ()=>{
 module.exports = {
     userOne,
     userOneId,
+    taskOne,
+    taskTwo,
+    taskThree,
     setupDatabase
 }
