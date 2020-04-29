@@ -2,13 +2,13 @@
 
 This is a task manager REST API complete with user accounts and authentication
 
-## What I have learned and practiced in order to build this application
 By using the following tools, I have learned how to
-- Build, test, and launch Node apps
-- Create Express web servers and APIs
-- Store data with Mongoose and MongoDB
-- Use cutting-edge ES6/ES7 JavaScript
-- Deploy your Node apps to production
+
+- Build, test, and launch Node apps,
+- Create Express web servers and APIs,
+- Store data with Mongoose and MongoDB,
+- Use cutting-edge ES6/ES7 JavaScript,
+- Deploy Node app to production,
 
 1. Node.js
 2. Npm
