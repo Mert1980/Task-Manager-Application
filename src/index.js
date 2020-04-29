@@ -1,11 +1,20 @@
-const express = require("express");
-require("./db/mongoose");
+const app = require("./app")
 
-const userRouter = require("./routers/user");
-const taskRouter = require("./routers/task");
-
-const app = express();
 const port = process.env.PORT
+
+app.listen(port, () => {
+  console.log(`Server is up on port ${port}`);
+});
+
+// const express = require("express");
+// require("./db/mongoose");
+
+// const userRouter = require("./routers/user");
+// const taskRouter = require("./routers/task");
+
+// const app = express();
+
+
 
 /* ****** How to set up multer ******
 
@@ -48,19 +57,15 @@ app.use((req, res, next) => {
 });
 */
 
-app.use(express.json()); // this configures express to automatically parse JSON into
-                        // object so we can access it in our request handlers
-app.use(userRouter);
-app.use(taskRouter);
+// app.use(express.json()); // this configures express to automatically parse JSON into
+//                         // object so we can access it in our request handlers
+// app.use(userRouter);
+// app.use(taskRouter);
 
 /*
 Without middelware: new request --> run route handler
 With middelware: new request --> do something --> run route handler
 */
-
-app.listen(port, () => {
-  console.log(`Server is up on port ${port}`);
-});
 
 /* const jwt = require('jsonwebtoken')
 
